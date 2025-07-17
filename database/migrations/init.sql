@@ -1,8 +1,8 @@
 CREATE TABLE subscriptions (
    id UUID PRIMARY KEY,
-   service_name VARCHAR(256) NOT NULL,
-   price_rub INT,
+   service_name VARCHAR(255) NOT NULL,
+   price_rub INT NOT NULL,
    user_id UUID NOT NULL,
-   start_date DATE NOT NULL,
-   end_date DATE NULL
+   start_date VARCHAR(255) NOT NULL,
+   end_date VARCHAR(255)
 );
