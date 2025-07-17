@@ -20,8 +20,9 @@
 
     ```bash
     docker compose up --build
-
+    ```
     либо
+    ```bash
 
     docker-compose up --build
     ```
