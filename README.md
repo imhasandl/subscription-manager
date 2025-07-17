@@ -19,6 +19,10 @@
 3.  Запустите проект с помощью Docker Compose:
 
     ```bash
+    docker compose up --build
+
+    либо
+
     docker-compose up --build
     ```
 
