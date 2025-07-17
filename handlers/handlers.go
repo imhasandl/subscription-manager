@@ -19,6 +19,14 @@ func NewConfig(db *database.DB) *Config {
 	}
 }
 
+// GetSubscription godoc
+// @Summary Get a subscription by ID
+// @Description Get details of a subscription by its ID
+// @ID get-subscription
+// @Produce  json
+// @Param id path string true "Subscription ID (UUID)"
+// @Success 200 {object} database.Subscription
+// @Router /subscription/{id} [get]
 func (cfg *Config) GetSubscription(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := uuid.Parse(idStr)
@@ -36,6 +44,15 @@ func (cfg *Config) GetSubscription(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, sub)
 }
 
+// CreateSubscription godoc
+// @Summary Create a new subscription
+// @Description Create a new subscription with the provided details
+// @ID create-subscription
+// @Accept  json
+// @Produce  json
+// @Param request body handlers.CreateSubscriptionRequest true "Subscription details"
+// @Success 200 {object} database.Subscription
+// @Router /subscription [post]
 func (cfg *Config) CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
 		ServiceName string    `json:"service_name"`
@@ -68,6 +85,16 @@ func (cfg *Config) CreateSubscription(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, subscription)
 }
 
+// ChangeSubscription godoc
+// @Summary Change an existing subscription
+// @Description Change an existing subscription with the provided details
+// @ID change-subscription
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Subscription ID (UUID)"
+// @Param request body handlers.ChangeSubscriptionRequest true "Subscription details"
+// @Success 200 {object} database.Subscription
+// @Router /subscription/{id} [put]
 func (cfg *Config) ChangeSubscription(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
 		ServiceName string `json:"service_name"`
@@ -96,6 +123,14 @@ func (cfg *Config) ChangeSubscription(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, sub)
 }
 
+// DeleteSubscription godoc
+// @Summary Delete a subscription
+// @Description Delete a subscription with the provided ID
+// @ID delete-subscription
+// @Produce  json
+// @Param id path string true "Subscription ID (UUID)"
+// @Success 200 {object} handlers.DeleteSubscriptionResponse
+// @Router /subscription/{id} [delete]
 func (cfg *Config) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := uuid.Parse(idStr)
@@ -117,9 +152,18 @@ func (cfg *Config) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, http.StatusOK, response)
 }
 
+// TotalSum godoc
+// @Summary Get total sum of subscriptions
+// @Description Get total sum of subscriptions with the provided start date
+// @ID total-sum
+// @Accept  json
+// @Produce  json
+// @Param request body handlers.TotalSumRequest true "Total sum details"
+// @Success 200 {object} handlers.TotalSumResponse
+// @Router /subscription/sum [get]
 func (cfg *Config) TotalSum(w http.ResponseWriter, r *http.Request) {
 	var requestData struct {
-		StartDate   string    `json:"start_date"`
+		StartDate string `json:"start_date"`
 	}
 
 	decoder := json.NewDecoder(r.Body)
@@ -140,4 +184,28 @@ func (cfg *Config) TotalSum(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.RespondWithJSON(w, http.StatusOK, response)
+}
+
+type CreateSubscriptionRequest struct {
+	ServiceName string    `json:"service_name"`
+	PriceRub    int       `json:"price_rub"`
+	UserID      uuid.UUID `json:"user_id"`
+	StartDate   string    `json:"start_date"`
+	EndDate     string    `json:"end_date"`
+}
+
+type ChangeSubscriptionRequest struct {
+	ServiceName string `json:"service_name"`
+}
+
+type DeleteSubscriptionResponse struct {
+	Status string `json:"status"`
+}
+
+type TotalSumRequest struct {
+	StartDate string `json:"start_date"`
+}
+
+type TotalSumResponse struct {
+	TotalSum int `json:"total_sum"`
 }

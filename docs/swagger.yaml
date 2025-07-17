@@ -1,0 +1,155 @@
+definitions:
+  database.Subscription:
+    properties:
+      end_date:
+        type: string
+      id:
+        type: string
+      price_rub:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+  handlers.ChangeSubscriptionRequest:
+    properties:
+      service_name:
+        type: string
+    type: object
+  handlers.CreateSubscriptionRequest:
+    properties:
+      end_date:
+        type: string
+      price_rub:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+  handlers.DeleteSubscriptionResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  handlers.TotalSumRequest:
+    properties:
+      start_date:
+        type: string
+    type: object
+  handlers.TotalSumResponse:
+    properties:
+      total_sum:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /subscription:
+    post:
+      consumes:
+      - application/json
+      description: Create a new subscription with the provided details
+      operationId: create-subscription
+      parameters:
+      - description: Subscription details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateSubscriptionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Subscription'
+      summary: Create a new subscription
+  /subscription/{id}:
+    delete:
+      description: Delete a subscription with the provided ID
+      operationId: delete-subscription
+      parameters:
+      - description: Subscription ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.DeleteSubscriptionResponse'
+      summary: Delete a subscription
+    get:
+      description: Get details of a subscription by its ID
+      operationId: get-subscription
+      parameters:
+      - description: Subscription ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Subscription'
+      summary: Get a subscription by ID
+    put:
+      consumes:
+      - application/json
+      description: Change an existing subscription with the provided details
+      operationId: change-subscription
+      parameters:
+      - description: Subscription ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Subscription details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ChangeSubscriptionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/database.Subscription'
+      summary: Change an existing subscription
+  /subscription/sum:
+    get:
+      consumes:
+      - application/json
+      description: Get total sum of subscriptions with the provided start date
+      operationId: total-sum
+      parameters:
+      - description: Total sum details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.TotalSumRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.TotalSumResponse'
+      summary: Get total sum of subscriptions
+swagger: "2.0"
