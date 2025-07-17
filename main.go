@@ -32,9 +32,14 @@ func main() {
 
 	apiConfig := handlers.NewConfig(db)
 
-	_ = apiConfig
-
 	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /subscription/{id}", apiConfig.GetSubscription)
+	mux.HandleFunc("POST /subscription", apiConfig.CreateSubscription)
+	mux.HandleFunc("PUT /subscription/{id}", apiConfig.ChangeSubscription)
+	mux.HandleFunc("DELETE /subscription/{id}", apiConfig.DeleteSubscription)
+
+	mux.HandleFunc("GET /subscription/sum", apiConfig.TotalSum)
 
 	server := &http.Server{
 		Addr: ":" + port,
