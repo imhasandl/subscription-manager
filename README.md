@@ -8,7 +8,7 @@
 1.  Установите Docker и Docker Compose.
 2.  Создайте файл `.env` в корневой директории проекта и заполните его следующими значениями либо сами установите конфигурацию вашей базы данных:
 
-    ```
+    ```env
     POSTGRES_DB=subscription_db
     POSTGRES_USER=postgres
     POSTGRES_PASSWORD=postgres
@@ -29,21 +29,25 @@
 *   Принимает: `id` подписки в формате UUID в URL.
 *   Возвращает: JSON представление подписки с указанным `id`.
 
+---
+
 ### POST /subscription
 
 *   Принимает: JSON с данными для создания новой подписки:
 
     ```json
     {
-    "service_name": "Название сервиса",
-    "price_rub": 1000,
-    "user_id": "UUID пользователя",
-    "start_date": "Дата начала подписки",
-    "end_date": "Дата окончания подписки"
+        "service_name": "Название сервиса",
+        "price_rub": 1000,
+        "user_id": "UUID пользователя",
+        "start_date": "Дата начала подписки",
+        "end_date": "Дата окончания подписки"
     }
     ```
 
 *   Возвращает: JSON представление созданной подписки.
+
+---
 
 ### PUT /subscription/{id}
 
@@ -51,11 +55,13 @@
 
     ```json
     {
-    "service_name": "Новое название сервиса"
+        "service_name": "Новое название сервиса"
     }
     ```
 
 *   Возвращает: JSON представление обновленной подписки.
+
+---
 
 ### DELETE /subscription/{id}
 
@@ -64,9 +70,11 @@
 
     ```json
     {
-    "status": "success"
+        "status": "success"
     }
     ```
+
+---
 
 ### GET /subscription/sum
 
@@ -82,7 +90,7 @@
 
     ```json
     {
-    "total_sum": 1000
+        "total_sum": 1000
     }
     ```
 
